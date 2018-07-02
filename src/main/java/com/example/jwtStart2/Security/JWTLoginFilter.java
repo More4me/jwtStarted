@@ -18,26 +18,26 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Collections;
-
+//toDo: to create class for filter and generate token in first attempt login
 public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
 
     public JWTLoginFilter(String url, AuthenticationManager authManager) {
         super(new AntPathRequestMatcher(url));
+        //toDo: 7- set credential
         setAuthenticationManager(authManager);
     }
 
+    // user attempt to login using username and password
     @Override
     public Authentication attemptAuthentication(
             HttpServletRequest req, HttpServletResponse res)
             throws AuthenticationException, IOException, ServletException {
+        // get from request username and password
         AccountCredentials creds = new ObjectMapper()
                 .readValue(req.getInputStream(), AccountCredentials.class);
+
+        // authenticate user
         return getAuthenticationManager().authenticate(
-                /*
-                * User.withDefaultPasswordEncoder().username("user").password("user").roles("USER").build();
-                 *
-                *
-                * */
                 new UsernamePasswordAuthenticationToken(
                         creds.getUsername(),
                         creds.getPassword(),
@@ -46,6 +46,8 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
         );
     }
 
+    // in case the user was authentication do ...
+    // note you may implement or override	*unsuccessfulAuthentication* method for unsuccessful authentication
     @Override
     protected void successfulAuthentication(
             HttpServletRequest req,

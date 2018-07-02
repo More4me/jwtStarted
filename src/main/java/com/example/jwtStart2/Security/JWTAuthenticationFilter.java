@@ -10,6 +10,7 @@ import java.io.IOException;
 
 public class JWTAuthenticationFilter extends GenericFilterBean {
 
+    //toDo: 5- parse token
     @Override
     public void doFilter(ServletRequest request,
                          ServletResponse response,
